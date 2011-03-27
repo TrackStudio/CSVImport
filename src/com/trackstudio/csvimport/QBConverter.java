@@ -2,10 +2,7 @@ package com.trackstudio.csvimport;
 
 import au.com.bytecode.opencsv.CSVReader;
 
-import java.io.Reader;
-import java.io.IOException;
-import java.io.FileInputStream;
-import java.io.File;
+import java.io.*;
 import java.util.Properties;
 import java.util.ArrayList;
 
@@ -21,8 +18,9 @@ public class QBConverter extends CSVReader {
         properties = new Properties();
         if (mappingFile!=null){
         try {
-            FileInputStream fis = new FileInputStream(mappingFile);
-            properties.load(fis);
+             FileInputStream fis = new FileInputStream(mappingFile);
+            InputStreamReader in = new InputStreamReader(fis, "UTF-8");
+            properties.load(in);
             fis.close();
         } catch (IOException e) {
             e.printStackTrace();

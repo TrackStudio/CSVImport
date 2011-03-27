@@ -108,6 +108,8 @@ public class FieldMap {
     public static final FieldMap MSG_DEADLINE = new FieldMap(50, "MESSAGE_DEADLINE", "msg_deadline", "msg_deadline");
     public static final FieldMap MSG_BUDGET = new FieldMap(51, "MESSAGE_BUDGET", "msg_budget", "msg_budget");
     public static final FieldMap MSG_PRIORITY = new FieldMap(52, "MESSAGE_PRIORITY", "msg_priority", "msg_priority");
+    public static final FieldMap USER_TEMPLATE = new FieldMap(40, "USER_TEMPLATE", "template", "user_template");
+    public static final FieldMap USER_PASSWORD = new FieldMap(40, "USER_PASSWORD", "password", "user_password");
     public static final ArrayList<FieldMap> taskFields = new ArrayList<FieldMap>();
     public static final ArrayList<FieldMap> userFields = new ArrayList<FieldMap>();
     public static final ArrayList<FieldMap> messageFields = new ArrayList<FieldMap>();
@@ -161,5 +163,7 @@ public class FieldMap {
         userFields.add(USER_ACTIVE);
         userFields.add(USER_CHILDCOUNT);
         userFields.add(USER_CHILDALLOWED);
+        userFields.add(USER_TEMPLATE);
+        userFields.add(USER_PASSWORD);
     }
 }

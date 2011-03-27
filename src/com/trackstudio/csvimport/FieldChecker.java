@@ -7,13 +7,6 @@ import java.util.List;
 import java.util.Arrays;
 import java.util.ArrayList;
 
-/**
- * Created by IntelliJ IDEA.
- * User: winzard
- * Date: 16.02.2010
- * Time: 18:14:08
- * To change this template use File | Settings | File Templates.
- */
 public class FieldChecker {
     private static final int TASK_CATEGORY_DOES_NOT_EXIST_ERROR_CODE = 101;//ERROR
     private static final int TASK_PRIORITY_DOES_NOT_EXIST_ERROR_CODE = 102; //WARNING

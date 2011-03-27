@@ -71,7 +71,7 @@ public class TaskImporter {
             try {
 
                 taskDeadline = dateformat.parseToCalendar(FieldChecker.getFieldValue(nextline, headersLocal, FieldMap.TASK_DEADLINE)).getTimeInMillis();
-            } catch (ParseException e) {
+            } catch (Exception e) {
                 this.dataBean.setLog("ERROR: ", FieldMap.TASK_DEADLINE + " can not be parsed. See CSV file, line number " + String.valueOf(current) + " . The pattern for date fields is " + dateformat.getPattern());
 
                 error.append("ERROR: ").append(I18n.getString("MSG_FIELD")).append(" \"").append(FieldMap.TASK_DEADLINE).append("\" ").append(I18n.getString("MSG_FIELD_CANNOT_BE_PARSED")).append(" ").append(String.valueOf(current)).append(I18n.getString("MSG_FIELD_DATE_PATTERN")).append(dateformat.getPattern());

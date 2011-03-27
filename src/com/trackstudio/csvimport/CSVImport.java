@@ -123,12 +123,12 @@ public class CSVImport {
 
     public void changeFileInfo(String fileName, String encoding, String delimiter) {
         try {
-        this.dataBean.setLog(I18n.getString("CHANGE_FILE_INFO"));
-        this.fileName = fileName;
-        this.encoding = encoding;
-        this.delimiter = delimiter;
-        refreshCSVData();
-        initPreview();
+            this.dataBean.setLog(I18n.getString("CHANGE_FILE_INFO"));
+            this.fileName = fileName;
+            this.encoding = encoding;
+            this.delimiter = delimiter;
+            refreshCSVData();
+            initPreview();
         } catch (IOException ioe) {
             this.dataBean.setLog(ioe);
         }

@@ -48,6 +48,7 @@ public class ChooseFile extends PanelImpl {
         }
         mappingFileField = new JTextField();
         mappingFileField.setText(fileMapping);
+        cvs.setMapping(fileMapping);
         mappingFileField.setEditable(false);
         I18nButton chooseMappingButton = new I18nButton();
         chooseMappingButton.setText("MSG_MAPPING_BUTTON");

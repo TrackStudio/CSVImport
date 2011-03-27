@@ -70,7 +70,7 @@ public class UserImporter {
                 FieldChecker.getFieldValue(nextline, headers, FieldMap.USER_EMAIL),
                 FieldChecker.getFieldValue(nextline, headers, FieldMap.USER_STATUS),
                 FieldChecker.getFieldValue(nextline, headers, FieldMap.USER_TIMEZONE),
-                "" /* template */,
+                FieldChecker.getFieldValue(nextline, headers, FieldMap.USER_TEMPLATE),
                 FieldChecker.getFieldValue(nextline, headers, FieldMap.USER_LOCALE),
                 FieldChecker.getFieldValue(nextline, headers, FieldMap.USER_COMPANY),
                 "" /* email type */,
@@ -82,7 +82,7 @@ public class UserImporter {
                 "" /* html editor*/,
                 ""/* tree mode*/,
                 localParent,
-                "" /* password */,
+                FieldChecker.getFieldValue(nextline, headers, FieldMap.USER_PASSWORD),
                 udfNames,
                 FieldChecker.getUDFValues(headers, nextline)
         );
@@ -127,6 +127,7 @@ public class UserImporter {
                 + FieldMap.DEFAULT_PROJECT + " [" + FieldChecker.getFieldValue(nextline, headers, FieldMap.DEFAULT_PROJECT) + "] "
                 + FieldMap.USER_ACTIVE + " [" + FieldChecker.getFieldValue(nextline, headers, FieldMap.USER_ACTIVE) + "] "
                 + FieldMap.USER_PARENT+ " [" + FieldChecker.getFieldValue(nextline, headers, FieldMap.USER_PARENT) + "] "
+                + FieldMap.USER_TEMPLATE+ " [" + FieldChecker.getFieldValue(nextline, headers, FieldMap.USER_TEMPLATE) + "] "
         );
     }
 
