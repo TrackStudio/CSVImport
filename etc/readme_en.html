@@ -1,0 +1,34 @@
+<html>
+<body>
+<h3 style="text-align:center;">CSV Import Tool.</h3>
+<div style="padding:5px 5px;">
+    To import or update data you need to create two files: a CSV data file and a mapping file.
+    For example, to import users you should prepare <b>csvuser.csv</b> containing data like this:<br>
+    <br>
+    <i>Login;Name;Status;Email<br>
+        peter;Peter Johnson;Developer;developer@localhost<br>
+        john;John Peretson;Manager;manager@localhost<br>
+        simba;Simba Toowe;Tester;tester@localhost<br></i>
+    <br>
+    and mapping file csvuser.properties looking like this:
+    <br>
+    <i>
+        PRSTATUS=Status<br>
+        LOGIN=Login<br>
+        USER_NAME=Name<br>
+        EMAIL=Email<br>
+    </i>
+    <br>
+    Where the names on the left are the TrackStudio field names and those on the right are the field names contained in the CSV file.
+    <br><b>Note 1:</b> the names in the mapping file are case sensitive; the mapping file CSV field names must exactly match those on the first line of the CSV file.
+    <br><b>Note 2:</b> the CSV file can contain fields other than those contained in the mapping file.
+    <br><b>Note 3:</b> the CSV Import Tool expects the data file to have the extension .csv and the mapping file to have the extension .properties although other extensions can be used and selected.
+    <br><b>Note 4:</b> the choice of csvuser for the file names used in this example is arbitrary.  Any name may be given, can contain spaces but you may find it convenient to use the same name as the data file for the related mapping file.
+    <br><b>Note 5:</b> where either a TrackStudio field name or a data file field name contain spaces these must be escaped through the use of backslashes:
+    Section\ Membership\ (ACD\ Type)=Section\ Membership
+    <br><b>Note 6:</b> if you want to find out what field names to use in your mapping file this can be done by exporting the relevant fields from TrackStudio and looking at the first row of the resulting CSV file.
+    <br><br>
+    Other TrackStudio field names are provided by way of example in the file <b>demo/cvsdefault.properties</b>
+</div>
+</body>
+</html>

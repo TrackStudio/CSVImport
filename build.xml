@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="csvimport" name="CsvImport">
+
+    <property name="version" value="40"/>
+    <property name="project.dir" value="${basedir}"/>
+    <property name="temp.dir" value="${project.dir}/temp"/>
+    <property name="dist.dir" value="${project.dir}/dist"/>
+    <property name="src.dir" value="${project.dir}/src"/>
+    <property name="lib.dir" value="${project.dir}/lib"/>
+    <property name="classpath.dir" value="${lib.dir}/commons-discovery.jar:
+	                                          ${lib.dir}/commons-logging-1.1.1.jar:
+	                                          ${lib.dir}/jaxrpc.jar:
+	                                          ${lib.dir}/log4j-1.2.15.jar:
+	                                          ${lib.dir}/opencsv-1.8.jar:
+	                                          ${lib.dir}/xerces-2.6.2.jar:
+                                              ${lib.dir}/webservices-rt.jar:
+                                              ${lib.dir}/webservices-tools.jar:
+                                              ${lib.dir}/saaj.jar"/>
+    <target name="csvimport">
+        <mkdir dir="${temp.dir}"/>
+        <mkdir dir="${temp.dir}/resources"/>
+        <mkdir dir="${temp.dir}/resources/images"/>
+
+
+        <native2ascii encoding="UTF-8" src="${project.dir}/resources/lang" dest="${temp.dir}"
+                      includes="csvimport_en.properties" ext=".properties"/>
+        <native2ascii encoding="UTF-8" src="${project.dir}/resources/lang" dest="${temp.dir}"
+                      includes="csvimport_ru.properties" ext=".properties"/>
+
+        <javac source="1.6" target="1.6"  classpath="${classpath.dir}:${lib.dir}/ts-soapclient.jar:"
+               destdir="${temp.dir}" srcdir="${src.dir}" debug="true" optimize="false" nowarn="yes"/>
+
+        <copy todir="${temp.dir}/resources/images">
+            <fileset dir="${project.dir}/resources/images"/>
+        </copy>
+
+        <jar basedir="${temp.dir}" jarfile="${lib.dir}/csvimport.jar" >
+            <manifest>
+                <attribute name="Built-By" value="winzard"/>
+                <section name="common">
+                    <attribute name="Specification-Title" value="CSV Import Tool"/>
+                    <attribute name="Specification-Version" value="${version}"/>
+                    <attribute name="Specification-Vendor" value="TrackStudio"/>
+                    <attribute name="Implementation-Title" value="CSV Import Tool"/>
+                    <attribute name="Implementation-Version" value="${version} Jan 2010"/>
+                    <attribute name="Implementation-Vendor" value="TrackStudio"/>
+                </section>
+                <attribute name="Class-Path" value="./lib/commons-discovery.jar:./lib/commons-logging-1.1.1.jar:./lib/jaxrpc.jar:./lib/log4j-1.2.15.jar:./lib/opencsv-1.8.jar:./lib/trackstudio.jar:./lib/xerces-2.6.2.jar:"/>
+                <attribute name="Main-Class" value="com.trackstudio.gui.RunnerWizard"/>
+            </manifest>
+        </jar>
+
+        <delete dir="${temp.dir}"/>
+
+    </target>
+
+    <target name="ts-client">
+        <delete dir="${temp.dir}"/>
+        <mkdir dir="${temp.dir}"/>
+        <mkdir dir="${temp.dir}/compiled"/>
+        <taskdef name="wsimport" classname="com.sun.tools.ws.ant.WsImport">
+            <classpath path="${classpath.dir}"/>
+        </taskdef>
+
+        <wsimport wsdl="${soapURL}/Acl?wsdl" destdir="${temp.dir}/compiled" keep="true" extension="true"/>
+        <wsimport wsdl="${soapURL}/Acl?wsdl" destdir="${temp.dir}/compiled" keep="true" extension="true"/>
+        <wsimport wsdl="${soapURL}/Attachment?wsdl" destdir="${temp.dir}/compiled" keep="true" extension="true"/>
+        <wsimport wsdl="${soapURL}/Bookmark?wsdl" destdir="${temp.dir}/compiled" keep="true" extension="true"/>
+        <wsimport wsdl="${soapURL}/Category?wsdl" destdir="${temp.dir}/compiled" keep="true" extension="true"/>
+        <wsimport wsdl="${soapURL}/Constants?wsdl" destdir="${temp.dir}/compiled" keep="true" extension="true"/>
+        <wsimport wsdl="${soapURL}/Export?wsdl" destdir="${temp.dir}/compiled" keep="true" extension="true"/>
+        <wsimport wsdl="${soapURL}/Filter?wsdl" destdir="${temp.dir}/compiled" keep="true" extension="true"/>
+        <wsimport wsdl="${soapURL}/Find?wsdl" destdir="${temp.dir}/compiled"  keep="true" extension="true"/>
+        <wsimport wsdl="${soapURL}/Index?wsdl" destdir="${temp.dir}/compiled" keep="true" extension="true"/>
+        <wsimport wsdl="${soapURL}/MailImport?wsdl" destdir="${temp.dir}/compiled"  keep="true" extension="true"/>
+        <wsimport wsdl="${soapURL}/Message?wsdl" destdir="${temp.dir}/compiled" keep="true" extension="true"/>
+        <wsimport wsdl="${soapURL}/Prstatus?wsdl" destdir="${temp.dir}/compiled"  keep="true" extension="true"/>
+        <wsimport wsdl="${soapURL}/Registration?wsdl" destdir="${temp.dir}/compiled"  keep="true" extension="true"/>
+        <wsimport wsdl="${soapURL}/Report?wsdl" destdir="${temp.dir}/compiled" keep="true" extension="true"/>
+        <wsimport wsdl="${soapURL}/SCM?wsdl" destdir="${temp.dir}/compiled" keep="true" extension="true"/>
+        <wsimport wsdl="${soapURL}/Step?wsdl" destdir="${temp.dir}/compiled" keep="true" extension="true"/>
+        <wsimport wsdl="${soapURL}/Task?wsdl" destdir="${temp.dir}/compiled"  keep="true" extension="true"/>
+        <wsimport wsdl="${soapURL}/Template?wsdl" destdir="${temp.dir}/compiled"  keep="true" extension="true"/>
+        <wsimport wsdl="${soapURL}/Udf?wsdl" destdir="${temp.dir}/compiled" keep="true" extension="true"/>
+        <wsimport wsdl="${soapURL}/User?wsdl" destdir="${temp.dir}/compiled" keep="true" extension="true"/>
+        <wsimport wsdl="${soapURL}/Workflow?wsdl" destdir="${temp.dir}/compiled" keep="true" extension="true"/>
+
+        <jar basedir="${temp.dir}/compiled" jarfile="${lib.dir}/ts-soapclient.jar"/>
+
+        <delete dir="${temp.dir}"/>
+    </target>
+
+    <target name="clear">
+        <delete dir="${temp.dir}"/>
+        <delete file="${lib.dir}/csvimport.jar"/>
+        <delete file="${lib.dir}/ts-soapclient.jar"/>
+    </target>
+
+    <target name="csvdistr-win-jre" if="install4j.home">
+        <taskdef name="install4j" classname="com.install4j.Install4JTask" classpath="${install4j.home}/bin/ant.jar"/>
+        <install4j projectfile="csv.install4j" buildids="21" release="${version}"/>
+    </target>
+
+    <target name="csvdistr-unix-jre" if="install4j.home">
+        <taskdef name="install4j" classname="com.install4j.Install4JTask" classpath="${install4j.home}/bin/ant.jar"/>
+        <install4j projectfile="csv.install4j" buildids="55" release="${version}"/>
+    </target>
+</project>
