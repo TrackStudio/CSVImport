@@ -42,16 +42,10 @@ public class QBConverter extends CSVReader {
         ArrayList<Integer> phds  = new ArrayList<Integer>();
         if (!properties.isEmpty())
             for (String p: properties.stringPropertyNames()){
-                Object o = properties.get(p);
-                if (o !=null && properties.get(p).toString().length()>0){
+                String name = (String) properties.get(p);
+                if (name !=null && !name.isEmpty()){
                     st.add(p);
-
-                    String s = o.toString();
-                    if (s.startsWith("\"") && s.endsWith("\"")) {
-                        subs.add(s.substring(1, s.length()-1));
-                    } else {
-                        subs.add(s);
-                    }
+                    String s = name.startsWith("\"") && name.endsWith("\"") ? name.substring(1, name.length()-1) : name;
                     phds.add(-1);
                     for (int k=0; k<nextline.length; k++){
                         if (s.equals(nextline[k])){
@@ -68,8 +62,6 @@ public class QBConverter extends CSVReader {
         this.headers = st.toArray(this.headers);
         this.substitutions = subs.toArray(this.substitutions);
         this.placeholders = phds.toArray(this.placeholders);
-
-
     }
 
     public String[] getHeaders(){
@@ -88,31 +80,26 @@ public class QBConverter extends CSVReader {
             for (String line: nextline){
                 c += line.getBytes().length;
             }
-
-
-            if (nextline.length==1 && nextline[0].length()==0) return nextline;
-            else{
+            if (nextline.length==1 && nextline[0].length()==0) {
+                return nextline;
+            } else {
                 String[] newline = new String[headers.length];
                 for (int k=0; k<headers.length; k++){
                     if (this.placeholders.length>0){
-                        if (this.placeholders[k]>-1){
+                        if (this.placeholders[k]>-1) {
                             newline[k]=nextline[this.placeholders[k]];
-
+                        } else {
+                            newline[k]= "";
                         }
-                        else{
-                            newline[k]=this.substitutions[k];
-
-                        }
-                    }
-                    else
+                    } else {
                         newline = nextline;
+                    }
                 }
-
                 bytesReaded = c;
-
                 return newline;
             }
+        } else {
+            return null;
         }
-        else return null;
     }
 }

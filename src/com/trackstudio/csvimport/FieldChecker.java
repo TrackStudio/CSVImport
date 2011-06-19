@@ -23,6 +23,7 @@ public class FieldChecker {
     private static final int MESSAGE_PRIORITY_DOES_NOT_EXIST_ERROR_CODE = 304;
     private static final int MESSAGE_MESSAGE_TYPE_DOES_NOT_EXIST_ERROR_CODE = 305;
     private static final int MESSAGE_MESSAGE_RESOLUTION_DOES_NOT_EXIST_ERROR_CODE = 306;
+     private static final int TASK_STATUS_DOES_NOT_EXIST_ERROR_CODE = 107;
     public static final int ERR_TASK_INVALID_HEADER_MESSAGE=1;
      private static final int ERROR_PRSTATUS_NAME_IS_NOT_UNIQUE = 204; //WARNING
 
@@ -193,6 +194,8 @@ public class FieldChecker {
                 return I18n.getString("MESSAGE_MESSAGE_RESOLUTION_DOES_NOT_EXIST_ERROR");//"Operation Resolution Does Not Exist";
             case ERROR_PRSTATUS_NAME_IS_NOT_UNIQUE:
                 return I18n.getString("ERROR_PRSTATUS_NAME_IS_NOT_UNIQUE");
+            case TASK_STATUS_DOES_NOT_EXIST_ERROR_CODE:
+                return I18n.getString("TASK_STATUS_DOES_NOT_EXIST_ERROR_CODE");
         }
         return "";
     }
