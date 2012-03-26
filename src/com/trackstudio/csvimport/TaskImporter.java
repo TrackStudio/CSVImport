@@ -83,7 +83,7 @@ public class TaskImporter {
         if (FieldChecker.getFieldValue(nextline, headersLocal, FieldMap.TASK_SUBMITDATE).length() != 0) {
             try {
                 taskSubmitDate = dateformat.parseToCalendar(FieldChecker.getFieldValue(nextline, headersLocal, FieldMap.TASK_SUBMITDATE)).getTimeInMillis();
-            } catch (ParseException e) {
+            } catch (Exception e) {
                 this.dataBean.setLog("ERROR: ", FieldMap.TASK_SUBMITDATE + " can not be parsed. See CSV file, line number " + String.valueOf(current) + " . " + I18n.getString("MSG_FIELD_DATE_PATTERN") + dateformat.getPattern());
                 error.append("ERROR: ").append(I18n.getString("MSG_FIELD")).append(" \"").append(FieldMap.TASK_SUBMITDATE.getAltKey()).append("\" ").append(I18n.getString("MSG_FIELD_CANNOT_BE_PARSED")).append(" ").append(String.valueOf(current)).append(" . ").append(I18n.getString("MSG_FIELD_DATE_PATTERN")).append(dateformat.getPattern());
 
