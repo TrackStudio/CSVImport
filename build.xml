@@ -13,8 +13,6 @@
 	                                          ${lib.dir}/log4j-1.2.15.jar:
 	                                          ${lib.dir}/opencsv-1.8.jar:
 	                                          ${lib.dir}/xerces-2.6.2.jar:
-                                              ${lib.dir}/webservices-rt.jar:
-                                              ${lib.dir}/webservices-tools.jar:
                                               ${lib.dir}/saaj.jar"/>
     <target name="csvimport">
         <mkdir dir="${temp.dir}"/>

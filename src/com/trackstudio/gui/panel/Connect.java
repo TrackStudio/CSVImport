@@ -24,6 +24,7 @@ public class Connect extends PanelImpl {
     private I18nButton testConnectionButton;
     private CSVImport csv;
     private String message;
+    private CheckConnection action;
 
     public Connect(DataBean dataBean, CSVImport csv) {
         this.dataBean = dataBean;
@@ -57,38 +58,8 @@ public class Connect extends PanelImpl {
         jPanel.add(passwordField, new Rectangle(3, 9, 4, 1));
 
         testConnectionButton = new I18nButton("MSG_TEST_CONNECTION");
-        testConnectionButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    if ((urlField.getText().length() == 0)) {
-                        JOptionPane.showMessageDialog(testConnectionButton.getParent(), I18n.getString("MSG_URL_FIELD_IS_EMPTY_MESSAGE")/*URL Field is empty"*/, "Trackstudio Enterprise", JOptionPane.ERROR_MESSAGE);
-                    } else if ((loginField.getText().length() == 0)) {
-                        JOptionPane.showMessageDialog(testConnectionButton.getParent(), I18n.getString("MSG_LOGIN_FIELD_IS_EMPTY_MESSAGE")/*"Login Field is empty"*/, "Trackstudio Enterprise", JOptionPane.ERROR_MESSAGE);
-                    } else {
-                        csv.changeConnectionSettings(urlField.getText(), loginField.getText(), new String(passwordField.getPassword()));
-                        JOptionPane.showMessageDialog(testConnectionButton.getParent(), I18n.getString("MSG_SUCCESSFULL_CONNECTION_MESSAGE")/*"Successful Connection"*/, "Trackstudio Enterprise", JOptionPane.INFORMATION_MESSAGE);
-                        message = Wizard.VATILDATE_FRUE;
-                    }
-                } catch (MalformedURLException mex) {
-                    JOptionPane.showMessageDialog(testConnectionButton.getParent(), I18n.getString("MSG_INVALID_URL_MESSAGE") + "\n" + mex.getMessage()/*"Invalid URL"*/, "Trackstudio Enterprise", JOptionPane.ERROR_MESSAGE);
-                    dataBean.setLog(mex);
-                    dataBean.setLog("ERROR:" + mex.getMessage());
-                } catch (java.net.ConnectException exc) {
-                    JOptionPane.showMessageDialog(null, I18n.getString("MSG_CONNECTION_ERROR_MESSAGE") + "\n " + exc.getMessage()/*"Connection exception"*/, "Trackstudio Enterprise", JOptionPane.ERROR_MESSAGE);
-                    dataBean.setLog("ERROR:" + exc.getMessage());
-                    dataBean.setLog(exc);
-                }
-                catch (SocketException exs) {
-                    JOptionPane.showMessageDialog(testConnectionButton.getParent(), I18n.getString("MSG_CONNECTION_ERROR_MESSAGE") + "\n" + exs.getMessage()/*"Connection error"*/, "Trackstudio Enterprise", JOptionPane.ERROR_MESSAGE);
-                    dataBean.setLog("ERROR:" + exs.getMessage());
-                    dataBean.setLog(exs);
-                }
-                catch (Exception ex) {
-                    JOptionPane.showMessageDialog(testConnectionButton.getParent(), ex.getMessage(), "Trackstudio Enterprise", JOptionPane.ERROR_MESSAGE);
-                    dataBean.setLog(ex);
-                }
-            }
-        });
+        action = new CheckConnection();
+        testConnectionButton.addActionListener(action);
         jPanel.add(testConnectionButton, new Rectangle(7, 12, 3, 1));
     }
 
@@ -102,10 +73,56 @@ public class Connect extends PanelImpl {
 
     @Override
     public String validateForm() {
+        action.checkConnectin();
         return message;
     }
 
     @Override
     public void updateDataForm() {
+    }
+
+    private class CheckConnection implements ActionListener {
+        private boolean showMessage = true;
+
+        public void checkConnectin() {
+            showMessage = false;
+            actionPerformed(null);
+            showMessage = true;
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            try {
+                if ((urlField.getText().length() == 0)) {
+                    if (showMessage) {
+                        JOptionPane.showMessageDialog(testConnectionButton.getParent(), I18n.getString("MSG_URL_FIELD_IS_EMPTY_MESSAGE")/*URL Field is empty"*/, "Trackstudio Enterprise", JOptionPane.ERROR_MESSAGE);
+                    }
+                } else if ((loginField.getText().length() == 0)) {
+                    if (showMessage) {
+                        JOptionPane.showMessageDialog(testConnectionButton.getParent(), I18n.getString("MSG_LOGIN_FIELD_IS_EMPTY_MESSAGE")/*"Login Field is empty"*/, "Trackstudio Enterprise", JOptionPane.ERROR_MESSAGE);
+                    }
+                } else {
+                    csv.changeConnectionSettings(urlField.getText(), loginField.getText(), new String(passwordField.getPassword()));
+                    if (showMessage) {
+                        JOptionPane.showMessageDialog(testConnectionButton.getParent(), I18n.getString("MSG_SUCCESSFULL_CONNECTION_MESSAGE")/*"Successful Connection"*/, "Trackstudio Enterprise", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                    message = Wizard.VATILDATE_FRUE;
+                }
+            } catch (MalformedURLException mex) {
+                JOptionPane.showMessageDialog(testConnectionButton.getParent(), I18n.getString("MSG_INVALID_URL_MESSAGE") + "\n" + mex.getMessage()/*"Invalid URL"*/, "Trackstudio Enterprise", JOptionPane.ERROR_MESSAGE);
+                dataBean.setLog(mex);
+                dataBean.setLog("ERROR:" + mex.getMessage());
+            } catch (java.net.ConnectException exc) {
+                JOptionPane.showMessageDialog(null, I18n.getString("AUTHENTICATION_FAILED") /*"Connection exception"*/, "Trackstudio Enterprise", JOptionPane.ERROR_MESSAGE);
+                dataBean.setLog("ERROR:" + exc.getMessage());
+                dataBean.setLog(exc);
+            } catch (SocketException exs) {
+                JOptionPane.showMessageDialog(testConnectionButton.getParent(), I18n.getString("MSG_CONNECTION_ERROR_MESSAGE") + "\n" + exs.getMessage()/*"Connection error"*/, "Trackstudio Enterprise", JOptionPane.ERROR_MESSAGE);
+                dataBean.setLog("ERROR:" + exs.getMessage());
+                dataBean.setLog(exs);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(testConnectionButton.getParent(), ex.getMessage(), "Trackstudio Enterprise", JOptionPane.ERROR_MESSAGE);
+                dataBean.setLog(ex);
+            }
+        }
     }
 }
