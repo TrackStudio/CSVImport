@@ -13,7 +13,13 @@
 	                                          ${lib.dir}/log4j-1.2.15.jar:
 	                                          ${lib.dir}/opencsv-1.8.jar:
 	                                          ${lib.dir}/xerces-2.6.2.jar:
-                                              ${lib.dir}/saaj.jar"/>
+                                              ${lib.dir}/saaj.jar:
+                                              ${lib.dir}/jaxws-tools.jar:
+                                              ${lib.dir}/jaxb-xjc.jar:
+                                              ${lib.dir}/jaxb-impl-2.1.12.jar:
+                                              ${lib.dir}/jaxws-rt.jar:
+                                              ${lib.dir}/streambuffer.jar:
+                                               ${lib.dir}/stax-ex.jar"/>
     <target name="csvimport">
         <mkdir dir="${temp.dir}"/>
         <mkdir dir="${temp.dir}/resources"/>
@@ -56,7 +62,7 @@
         <delete dir="${temp.dir}"/>
         <mkdir dir="${temp.dir}"/>
         <mkdir dir="${temp.dir}/compiled"/>
-        <taskdef name="wsimport" classname="com.sun.tools.ws.ant.WsImport">
+        <taskdef name="wsimport" classname="com.sun.tools.ws.ant.WsImport2">
             <classpath path="${classpath.dir}"/>
         </taskdef>
 
