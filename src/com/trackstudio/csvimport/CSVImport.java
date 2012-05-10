@@ -129,7 +129,7 @@ public class CSVImport {
             this.delimiter = delimiter;
             refreshCSVData();
             initPreview();
-        } catch (IOException ioe) {
+        } catch (Exception ioe) {
             this.dataBean.setLog(ioe);
         }
     }

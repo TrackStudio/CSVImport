@@ -105,6 +105,7 @@ public class Wizard extends JFrame {
                 console.setVisible(true);
             }
         });
+        wizard.dataBean.setLogsButton(logsButton);
         exitButton = new I18nButton("MSG_EXIT_BUTTON");
         exitButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {

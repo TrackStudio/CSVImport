@@ -1,7 +1,9 @@
 package com.trackstudio.data;
 
 import com.trackstudio.component.TSProperties;
+import com.trackstudio.gui.Wizard;
 
+import javax.swing.*;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Locale;
@@ -20,6 +22,7 @@ public class DataBean {
     private Locale currentLocale;
     private String mappingFile;
     private boolean moreEncoding = false;
+    private JButton logsButton;
 
     public DataBean() {
         this.delimiter = TSProperties.getInstance().getTrackStudioProperty(TSProperties.TRACKSTUDIO_DELIMITER_PROPERTY);
@@ -28,6 +31,10 @@ public class DataBean {
         this.login = TSProperties.getInstance().getTrackStudioProperty(TSProperties.TRACKSTUDIO_LOGIN_PROPERTY);
         String localeProperty = TSProperties.getInstance().getTrackStudioProperty(TSProperties.TRACKSTUDIO_LOCALE_PROPERTY);
         this.currentLocale = localeProperty != null && localeProperty.length() != 0 ? new Locale(localeProperty) : Locale.ENGLISH;
+    }
+
+    public void setLogsButton(JButton logsButton) {
+        this.logsButton = logsButton;
     }
 
     public boolean isMoreEncoding() {
@@ -108,6 +115,8 @@ public class DataBean {
 
     public void setLog(Exception e) {
         try {
+            logsButton.setIcon(Wizard.getIcon("error.gif"));
+            logsButton.updateUI();
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
             e.printStackTrace(pw);
