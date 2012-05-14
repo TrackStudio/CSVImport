@@ -65,6 +65,7 @@ public class ChooseFile extends PanelImpl {
                 filter.addType("properties");
                 filter.setDescription("Mapping files");
                 fc.addChoosableFileFilter(filter);
+                fc.setFileFilter(filter);
                 int rVal = fc.showOpenDialog(null);
                 if (rVal == JFileChooser.APPROVE_OPTION){
                     String path = fc.getSelectedFile().getAbsolutePath();
@@ -99,6 +100,7 @@ public class ChooseFile extends PanelImpl {
                 filter.addType("csv");
                 filter.setDescription("CSV files");
                 fc.addChoosableFileFilter(filter);
+                fc.setFileFilter(filter);
                 int rVal = fc.showOpenDialog(null);
                 if (rVal == JFileChooser.APPROVE_OPTION)
                     filePathField.setText(fc.getSelectedFile().getAbsolutePath());
