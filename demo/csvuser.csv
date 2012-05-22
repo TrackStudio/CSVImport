@@ -1,4 +1,4 @@
 Login;Name;Status;Email
-peter;Peter Johnson;Developer;developer@localhost
-john;John Peretson;Manager;manager@localhost
-simba;Simba Toowe;Tester;tester@localhost
+peter;Peter Johnson;Администратор;developer@localhost
+john;John Peretson;Администратор;manager@localhost
+simba;Simba Toowe;Администратор;tester@localhost

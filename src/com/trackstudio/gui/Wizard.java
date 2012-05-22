@@ -53,7 +53,6 @@ public class Wizard extends JFrame {
                     ++nowPanel;
                     if (nowPanel == panels.size() -1) {
                         previewButton.setText(I18n.getString("BEGIN_WIZARD"));
-                        previewButton.updateUI();
                     }
                     showPanel(nowPanel);
                 }
@@ -66,7 +65,6 @@ public class Wizard extends JFrame {
                 if (nowPanel == panels.size() -1) {
                     nowPanel = 1;
                     previewButton.setText(I18n.getString("MSG_BACK_BUTTON"));
-                    previewButton.updateUI();
                     showPanel(nowPanel);
                 } else {
                     showPanel(--nowPanel);
@@ -234,6 +232,7 @@ public class Wizard extends JFrame {
         public void actionPerformed(ActionEvent e) {
             int ind = localeUICombo.getSelectedIndex();
             dataBean.setCurrentLocale(new Locale(availableUILocales.get(ind)));
+            dataBean.setLog(dataBean.getCurrentLocale().toString());
             dataBean.setLog(I18n.getString("LOCALE_CHANGED", new String[]{dataBean.getCurrentLocale().toString()}));
             updateUIComponents();
         }
