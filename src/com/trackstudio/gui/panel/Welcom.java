@@ -9,10 +9,8 @@ import com.trackstudio.gui.panel.impl.PanelImpl;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.util.Scanner;
 
 public class Welcom extends PanelImpl {
     private DataBean dataBean;
@@ -54,15 +52,10 @@ public class Welcom extends PanelImpl {
         editorPane.setContentType("text/html");
         editorPane.setEditable(false);
 
-        try {
-            File file = new File("./etc/readme_"+this.dataBean.getCurrentLocale().toString()+".html");
-            if (file.exists()) {
-                String text = readFileAsString(file);
-                text = new String(text.getBytes(), "windows-1251");
-                editorPane.setText(text);
-            }
-        } catch (IOException e) {
-            this.dataBean.setLog(e);
+        File file = new File("./etc/readme_"+this.dataBean.getCurrentLocale().toString()+".html");
+        if (file.exists()) {
+            String text = readFile(file, "UTF-8");
+            editorPane.setText(text);
         }
         editorPane.updateUI();
         JScrollPane scroller = new JScrollPane();
@@ -74,17 +67,22 @@ public class Welcom extends PanelImpl {
         jPanel.add(continueLabel, new Rectangle(4, 19, 10, 1));
     }
 
-    private static String readFileAsString(File file) throws IOException{
-        StringBuffer fileData = new StringBuffer(1000);
-        BufferedReader reader = new BufferedReader(new FileReader(file));
-        char[] buf = new char[1024];
-        int numRead;
-        while((numRead=reader.read(buf)) != -1){
-            String readData = String.valueOf(buf, 0, numRead);
-            fileData.append(readData);
-            buf = new char[1024];
+    public synchronized String readFile(File file, String encoding) {
+        StringBuilder text = new StringBuilder();
+        String NL = System.getProperty("line.separator");
+        Scanner scanner = null;
+        try {
+            scanner = new Scanner(new FileInputStream(file), encoding);
+            while (scanner.hasNextLine()){
+                text.append(scanner.nextLine()).append(NL);
+            }
+        } catch (Exception e) {
+            dataBean.setLog(e);
+        } finally{
+            if (scanner != null) {
+                scanner.close();
+            }
         }
-        reader.close();
-        return fileData.toString();
+        return text.toString();
     }
 }
