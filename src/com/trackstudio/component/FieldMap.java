@@ -13,13 +13,13 @@ public class FieldMap {
 
     
     public static String getFilterKeyByFieldKey(String field){
-        if (field.startsWith("UDF_SORT")){
+        if (field != null && field.startsWith("UDF_SORT")){
             return "UDF"+field.substring("UDF_SORT".length());
         }
         return allFields.get(field);
     }
 
-    public FieldMap(int order,String altKey, String filterKey, String fieldKey) {
+    public FieldMap(int order, String altKey, String filterKey, String fieldKey) {
         this.order=order;
         this.altKey = altKey;
         this.filterKey = filterKey;
@@ -28,7 +28,7 @@ public class FieldMap {
     }
 
     public static FieldMap createUDF(String caption, String filterKey, String fieldKey){
-        return new FieldMap(LAST+caption.hashCode(),caption, filterKey, fieldKey);
+        return new FieldMap(LAST+caption.hashCode(), caption, filterKey, fieldKey);
     }
 
     public String getAltKey() {
@@ -95,6 +95,7 @@ public class FieldMap {
     public static final FieldMap USER_LOGIN = new FieldMap(2, "LOGIN", "login", "user_login");
     public static final FieldMap USER_NAME = new FieldMap(3, "USER_NAME", "name", "user_name");
     public static final FieldMap FULLPATH = new FieldMap(6, "RELATIVE_PATH", "fullpath", "full_path");
+    public static final FieldMap CHAT = new FieldMap(53, "CHAT", "chat", "chat");
     public static final FieldMap USER_COMPANY = new FieldMap(36, "COMPANY", "company", "user_company");
     public static final FieldMap USER_EMAIL = new FieldMap(37, "EMAIL", "email", "user_email");
     public static final FieldMap USER_TEL = new FieldMap(38, "PHONE", "tel", "user_tel");
@@ -139,7 +140,9 @@ public class FieldMap {
         taskFields.add(TASK_SHORTNAME);
         taskFields.add(TASK_NAME);
         taskFields.add(TASK_DESCRIPTION);
+        taskFields.add(TASK_PARENT);
         taskFields.add(FULLPATH);
+        taskFields.add(CHAT);
 
         messageFields.add(MSG_SUSER_NAME);
         messageFields.add(MSG_SUBMITDATE);
@@ -148,6 +151,8 @@ public class FieldMap {
         messageFields.add(MSG_RESOLUTION);
         messageFields.add(MSG_ABUDGET);
         messageFields.add(TEXT_MSG);
+        messageFields.add(MESSAGE_TASK);
+        messageFields.add(MSG_PRIORITY);
 
         userFields.add(USER_EXPIREDATE);
         userFields.add(USER_STATUS);
@@ -155,6 +160,7 @@ public class FieldMap {
         userFields.add(USER_TIMEZONE);
         userFields.add(USER_LOGIN);
         userFields.add(USER_NAME);
+        userFields.add(USER_PARENT);
         userFields.add(FULLPATH);
 
         userFields.add(USER_COMPANY);
@@ -163,7 +169,9 @@ public class FieldMap {
         userFields.add(USER_ACTIVE);
         userFields.add(USER_CHILDCOUNT);
         userFields.add(USER_CHILDALLOWED);
+        userFields.add(DEFAULT_PROJECT);
         userFields.add(USER_TEMPLATE);
         userFields.add(USER_PASSWORD);
+
     }
 }
