@@ -188,7 +188,7 @@ public class Result extends PanelImpl {
         importProgress.setStringPainted(true);
         importProgress.setVisible(false);
 
-        createDbDialog = new JDialog((JFrame) this.getParent(), I18n.getString("MSG_PRODUCT"), false);
+        createDbDialog = new JDialog((JFrame) this.getParent(), I18n.getString("MSG_PRODUCT"), true);
 
         createDbDialog.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 

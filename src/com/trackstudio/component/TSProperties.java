@@ -197,7 +197,8 @@ public class TSProperties {
     
     public static final String SLASH4 = "\\\\";
     public static final String SLASH2 = "\\";
-   
+
+    public static final String TRACKSTUDIO_TIMEZONE_PROPERTY = "trackstudio.timezone";
     public static final String TRACKSTUDIO_ENCODING_PROPERTY = "trackstudio.encoding";
     public static final String TRACKSTUDIO_LOCALE_PROPERTY = "trackstudio.defaultLocale";
 
@@ -206,6 +207,7 @@ public class TSProperties {
     public static final String TRACKSTUDIO_LOGIN_PROPERTY = "trackstudio.login";
     public static final String TRACKSTUDIO_FILE_DATA = "trackstudio.file.data";
     public static final String TRACKSTUDIO_FILE_MAPPING = "trackstudio.file.mapping";
+    public static final String TRACKSTUDIO_PASSWORD_PROPERTY = "trackstudio.password";
 
     public static final String COMMENT_PREFIX = "#";
    
@@ -275,9 +277,11 @@ public class TSProperties {
             tmp.setProperty(TRACKSTUDIO_LOCALE_PROPERTY, properties.getProperty(TRACKSTUDIO_LOCALE_PROPERTY));
             tmp.setProperty(TRACKSTUDIO_DELIMITER_PROPERTY,properties.getProperty(TRACKSTUDIO_DELIMITER_PROPERTY));
             tmp.setProperty(TRACKSTUDIO_LOGIN_PROPERTY,properties.getProperty(TRACKSTUDIO_LOGIN_PROPERTY));
+            tmp.setProperty(TRACKSTUDIO_PASSWORD_PROPERTY,properties.getProperty(TRACKSTUDIO_PASSWORD_PROPERTY));
             tmp.setProperty(TRACKSTUDIO_URL_PROPERTY,properties.getProperty(TRACKSTUDIO_URL_PROPERTY));
             tmp.setProperty(TRACKSTUDIO_FILE_DATA, properties.getProperty(TRACKSTUDIO_FILE_DATA));
             tmp.setProperty(TRACKSTUDIO_FILE_MAPPING, properties.getProperty(TRACKSTUDIO_FILE_MAPPING));
+            tmp.setProperty(TRACKSTUDIO_TIMEZONE_PROPERTY, properties.getProperty(TRACKSTUDIO_TIMEZONE_PROPERTY));
 
             savePropFile(PROPERTY_URI, tmp, result);
 
@@ -333,7 +337,7 @@ public class TSProperties {
                     String trim = buf.trim();
                     if (trim.length() > 0 && !trim.startsWith(COMMENT_PREFIX)) {
                         if (trim.toLowerCase(Locale.ENGLISH).startsWith(TRACKSTUDIO_URL_PROPERTY.toLowerCase(Locale.ENGLISH)) ||
-                               
+                                trim.startsWith(TRACKSTUDIO_TIMEZONE_PROPERTY) ||
                                 trim.startsWith(TRACKSTUDIO_ENCODING_PROPERTY) ||
                                 trim.startsWith(TRACKSTUDIO_LOCALE_PROPERTY))
                             result.append(COMMENT_PREFIX);
@@ -374,9 +378,11 @@ public class TSProperties {
         properties.setProperty(TRACKSTUDIO_DELIMITER_PROPERTY, "");
         properties.setProperty(TRACKSTUDIO_ENCODING_PROPERTY, "");
         properties.setProperty(TRACKSTUDIO_LOGIN_PROPERTY, "");
+        properties.setProperty(TRACKSTUDIO_PASSWORD_PROPERTY, "");
         properties.setProperty(TRACKSTUDIO_LOCALE_PROPERTY, "");
         properties.setProperty(TRACKSTUDIO_FILE_DATA, "");
         properties.setProperty(TRACKSTUDIO_FILE_MAPPING, "");
+        properties.setProperty(TRACKSTUDIO_TIMEZONE_PROPERTY, "");
     }
     
     public void setTrackStudioProperty(String property, String value) {

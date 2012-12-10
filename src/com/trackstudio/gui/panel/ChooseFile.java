@@ -177,7 +177,9 @@ public class ChooseFile extends PanelImpl {
         }
         for (TimeZone l : sortedZones){
             timezoneBox.addItem(l);
-            if (l.equals(TimeZone.getDefault())) timezoneBox.setSelectedIndex(timezoneBox.getModel().getSize()-1);
+            if (l.equals(this.dataBean.getTimezone())) {
+                timezoneBox.setSelectedIndex(timezoneBox.getModel().getSize()-1);
+            }
 
         }
         timezoneBox.setRenderer(new DefaultListCellRenderer(){
@@ -199,11 +201,11 @@ public class ChooseFile extends PanelImpl {
 
         panelChooseFile.add(new Header(chooseFileLabel), new Rectangle(0, 0, 10, 2));
 
-        panelChooseFile.add(mappingFileField, new Rectangle(1, 4, 4, 1));
-        panelChooseFile.add(chooseMappingButton, new Rectangle(5, 4, 4, 1));
+        panelChooseFile.add(mappingFileField, new Rectangle(1, 4, 8, 1));
+        panelChooseFile.add(chooseMappingButton, new Rectangle(5, 5, 4, 1));
 
-        panelChooseFile.add(filePathField, new Rectangle(1, 6, 4, 1));
-        panelChooseFile.add(chooseFileButton, new Rectangle(5, 6, 4, 1));
+        panelChooseFile.add(filePathField, new Rectangle(1, 6, 8, 1));
+        panelChooseFile.add(chooseFileButton, new Rectangle(5, 7, 4, 1));
 
         panelChooseFile.add(charsetLabel, new Rectangle(1, 8, 2, 1));
         panelChooseFile.add(encodingCombo, new Rectangle(3, 8, 2, 1));
@@ -289,10 +291,14 @@ public class ChooseFile extends PanelImpl {
         TSProperties.getInstance().setTrackStudioProperty(TSProperties.TRACKSTUDIO_URL_PROPERTY, this.dataBean.getUrl());
         this.dataBean.setLog("login = " + this.dataBean.getLogin());
         TSProperties.getInstance().setTrackStudioProperty(TSProperties.TRACKSTUDIO_LOGIN_PROPERTY, this.dataBean.getLogin());
+        this.dataBean.setLog("password = ***");
+        TSProperties.getInstance().setTrackStudioProperty(TSProperties.TRACKSTUDIO_PASSWORD_PROPERTY, this.dataBean.getPassword());
         this.dataBean.setLog("file data = " + this.dataBean.getFilePath());
         TSProperties.getInstance().setTrackStudioProperty(TSProperties.TRACKSTUDIO_FILE_DATA, this.dataBean.getFilePath());
         this.dataBean.setLog("file mapping = " + this.dataBean.getMappingFile());
         TSProperties.getInstance().setTrackStudioProperty(TSProperties.TRACKSTUDIO_FILE_MAPPING, this.dataBean.getMappingFile());
+        this.dataBean.setLog("timezone = " + this.dataBean.getTimezone());
+        TSProperties.getInstance().setTrackStudioProperty(TSProperties.TRACKSTUDIO_TIMEZONE_PROPERTY, this.dataBean.getTimezone().getID());
 
         TSProperties.getInstance().updateConfig();
     }

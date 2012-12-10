@@ -18,7 +18,7 @@ public class DataBean {
     private Locale locale;
     private String encoding;
     private String delimiter;
-    private TimeZone timezone;
+    private String timezone;
     private Locale currentLocale;
     private String mappingFile;
     private boolean moreEncoding = false;
@@ -29,8 +29,10 @@ public class DataBean {
         this.encoding = TSProperties.getInstance().getTrackStudioProperty(TSProperties.TRACKSTUDIO_ENCODING_PROPERTY);
         this.url = TSProperties.getInstance().getTrackStudioProperty(TSProperties.TRACKSTUDIO_URL_PROPERTY);
         this.login = TSProperties.getInstance().getTrackStudioProperty(TSProperties.TRACKSTUDIO_LOGIN_PROPERTY);
+        this.password = TSProperties.getInstance().getTrackStudioProperty(TSProperties.TRACKSTUDIO_PASSWORD_PROPERTY);
         String localeProperty = TSProperties.getInstance().getTrackStudioProperty(TSProperties.TRACKSTUDIO_LOCALE_PROPERTY);
         this.currentLocale = localeProperty != null && localeProperty.length() != 0 ? new Locale(localeProperty) : Locale.ENGLISH;
+        this.timezone = TSProperties.getInstance().getTrackStudioProperty(TSProperties.TRACKSTUDIO_TIMEZONE_PROPERTY);
     }
 
     public void setLogsButton(JButton logsButton) {
@@ -62,11 +64,11 @@ public class DataBean {
     }
 
     public TimeZone getTimezone() {
-        return timezone;
+        return TimeZone.getTimeZone(timezone);
     }
 
     public void setTimezone(TimeZone timezone) {
-        this.timezone = timezone;
+        this.timezone = timezone.getID();
     }
 
     public String getDelimiter() {

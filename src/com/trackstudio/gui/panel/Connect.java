@@ -55,6 +55,7 @@ public class Connect extends PanelImpl {
 
         I18nLabel passwordLabel = new I18nLabel("MSG_PWD_LABEL");
         jPanel.add(passwordLabel, new Rectangle(1, 9, 2, 1));
+        passwordField.setText(this.dataBean.getPassword());
         jPanel.add(passwordField, new Rectangle(3, 9, 4, 1));
 
         testConnectionButton = new I18nButton("MSG_TEST_CONNECTION");
@@ -67,7 +68,7 @@ public class Connect extends PanelImpl {
     public void submitForm() {
         dataBean.setUrl(urlField.getText());
         dataBean.setLogin(loginField.getText());
-        dataBean.setPassword(passwordField.getPassword().toString());
+        dataBean.setPassword(String.valueOf(passwordField.getPassword()));
         this.setDataBean(dataBean);
     }
 
