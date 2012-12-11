@@ -85,7 +85,7 @@ public class ChooseRoot extends PanelImpl {
         createNewElement.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
                 AbstractButton abstractButton = (AbstractButton) e.getSource();
-                cvs.setCreateNewElement(!abstractButton.isSelected());
+                cvs.setCreateNewElement(abstractButton.isSelected());
             }
         });
     }
