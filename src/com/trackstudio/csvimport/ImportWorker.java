@@ -33,11 +33,11 @@ public abstract class ImportWorker<T>  extends SwingWorker<List<T>, T> {
         this.size = size;
     }
 
-    public ImportWorker(DataBean dataBean, QBConverter reader, Task task, User user, Message message, DateFormatter f, String sessionId, boolean createNew, String parentField) {
+    public ImportWorker(DataBean dataBean, QBConverter reader, Task task, User user, Message message, DateFormatter f, String sessionId, boolean updateTask, String parentField) {
         this.reader = reader;
-        this.task = new TaskImporter(dataBean, task, f, getHeaders(), sessionId, createNew, parentField);
+        this.task = new TaskImporter(dataBean, task, f, getHeaders(), sessionId, updateTask, parentField);
         this.user = new UserImporter(dataBean, user, f, getHeaders(), sessionId, parentField);
-        this.message = new MessageImporter(dataBean, message, f, getHeaders(), sessionId, createNew, parentField);
+        this.message = new MessageImporter(dataBean, message, f, getHeaders(), sessionId, updateTask, parentField);
     }
 
     @Override

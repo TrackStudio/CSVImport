@@ -34,7 +34,7 @@ public class CSVImport {
     private int readed;
     private String url;
     private String rootElement;
-    private boolean createNewElement = true;
+    private boolean updateTask = true;
     private DataBean dataBean;
 
     public CSVImport(DataBean dataBean) {
@@ -49,12 +49,12 @@ public class CSVImport {
         this.rootElement = rootElement;
     }
 
-    public boolean isCreateNewElement() {
-        return createNewElement;
+    public boolean isUpdateTask() {
+        return updateTask;
     }
 
-    public void setCreateNewElement(boolean createNewElement) {
-        this.createNewElement = createNewElement;
+    public void setUpdateTask(boolean updateTask) {
+        this.updateTask = updateTask;
     }
 
     public abstract class Searcher<T> {

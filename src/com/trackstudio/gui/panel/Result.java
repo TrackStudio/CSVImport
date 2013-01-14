@@ -13,7 +13,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -188,7 +187,7 @@ public class Result extends PanelImpl {
         importProgress.setStringPainted(true);
         importProgress.setVisible(false);
 
-        createDbDialog = new JDialog((JFrame) this.getParent(), I18n.getString("MSG_PRODUCT"), true);
+        createDbDialog = new JDialog((JFrame) this.getParent(), I18n.getString("MSG_PRODUCT"), false);
 
         createDbDialog.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
@@ -223,7 +222,7 @@ public class Result extends PanelImpl {
 
                 cvs.refreshCSVData();
                 DateFormatter dateFormatter = new DateFormatter(this.dataBean.getTimezone(), this.dataBean.getLocale());
-                ImportWorker<ImportResult> w = new ImportWorker<ImportResult>(this.dataBean, cvs.getReader(), cvs.getTaskService(), cvs.getUserService(), cvs.getMessageService(), dateFormatter, cvs.getSessionId(), cvs.isCreateNewElement(), cvs.getRootElement()){
+                ImportWorker<ImportResult> w = new ImportWorker<ImportResult>(this.dataBean, cvs.getReader(), cvs.getTaskService(), cvs.getUserService(), cvs.getMessageService(), dateFormatter, cvs.getSessionId(), cvs.isUpdateTask(), cvs.getRootElement()){
                     @Override
                     protected void process(List<ImportResult> chunks) {
                         if (chunks!=null && !chunks.isEmpty())

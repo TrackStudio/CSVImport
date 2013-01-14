@@ -4,7 +4,6 @@ package com.trackstudio.csvimport;
 import com.trackstudio.component.DateFormatter;
 import com.trackstudio.component.I18n;
 import com.trackstudio.data.DataBean;
-import com.trackstudio.soap.service.find.TaskBean;
 import com.trackstudio.soap.service.task.Task;
 import com.trackstudio.component.FieldMap;
 
@@ -20,15 +19,16 @@ public class TaskImporter {
     String sessionId;
     private DataBean dataBean;
 
-    boolean createNew;
-    public TaskImporter(DataBean dataBean, Task task, DateFormatter f, String[] headers, String sessionId, boolean createNew, String parentField) {
+    private boolean updateTask;
+
+    public TaskImporter(DataBean dataBean, Task task, DateFormatter f, String[] headers, String sessionId, boolean updateTask, String parentField) {
         this.dataBean = dataBean;
         this.task = task;
         this.dateformat = f;
         this.headers = headers;
         this.parentField = parentField;
         this.sessionId = sessionId;
-        this.createNew = createNew;
+        this.updateTask = updateTask;
 
     }
 
@@ -48,7 +48,7 @@ public class TaskImporter {
         taskUpdateDate = -1;
         taskCloseDate = -1;
         String[] headersLocal = headers;
-        if (createNew && FieldChecker.getFieldValue(nextline, headersLocal, FieldMap.TASK_CATEGORY)==null) {
+        if (updateTask && FieldChecker.getFieldValue(nextline, headersLocal, FieldMap.TASK_CATEGORY)==null) {
             this.dataBean.setLog("ERROR: Field '", FieldMap.TASK_CATEGORY + "' does not exists See CSV file, line number " + String.valueOf(current));
             error.append("ERROR: ").append(I18n.getString("MSG_FIELD")).append(" \"").append(FieldMap.TASK_CATEGORY).append("\" ").append(I18n.getString("MSG_TASK_INVALID_HEADER_MESSAGE")).append(" ").append(String.valueOf(current));
             return new ImportResult(current, nextline, error.toString(), ImportResult.TASK, false);
@@ -121,7 +121,7 @@ public class TaskImporter {
                 if (newNumber!=null) localParent = newNumber;
             }
 
-            if (createNew && localParent != null && localParent.length() > 0 ) {
+            if (updateTask && localParent != null && localParent.length() > 0 ) {
                 if (task.findTaskByName(sessionId, localParent) == null) {
                     if (task.findTaskByNumber(sessionId, localParent) == null) {
                         throw new Exception("Task " + parentField +" not found");
@@ -131,8 +131,9 @@ public class TaskImporter {
             String oldTaskId = FieldChecker.getFieldValue(nextline, headersLocal, FieldMap.TASK_NUMBER);
 
             String number = FieldChecker.getFieldValue(nextline, headersLocal, FieldMap.TASK_NUMBER);
+            this.dataBean.setLog(" update task : " + updateTask + " current number : " + number);
             newTaskNumber = task.importTask(sessionId,
-                    createNew ? "": number,
+                    updateTask ? number: "",
                     FieldChecker.getFieldValue(nextline, headersLocal, FieldMap.TASK_NAME),
                     FieldChecker.getFieldValue(nextline, headersLocal, FieldMap.TASK_SHORTNAME),
                     FieldChecker.getFieldValue(nextline, headersLocal, FieldMap.TASK_DESCRIPTION),

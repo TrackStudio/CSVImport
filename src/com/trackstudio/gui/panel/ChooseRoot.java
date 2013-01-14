@@ -81,11 +81,11 @@ public class ChooseRoot extends PanelImpl {
             }
 
         });
-        createNewElement.setSelected(cvs.isCreateNewElement());
+        createNewElement.setSelected(cvs.isUpdateTask());
         createNewElement.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
                 AbstractButton abstractButton = (AbstractButton) e.getSource();
-                cvs.setCreateNewElement(abstractButton.isSelected());
+                cvs.setUpdateTask(abstractButton.isSelected());
             }
         });
     }
