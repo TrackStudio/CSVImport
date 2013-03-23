@@ -1,105 +1,39 @@
 package com.trackstudio.csvimport;
 
 import au.com.bytecode.opencsv.CSVReader;
+import com.trackstudio.data.DataBean;
 
-import java.io.*;
-import java.util.Properties;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.ArrayList;
+import java.util.List;
 
+public class QBConverter {
+    private DataBean dataBean;
+    private String[] header;
+    private List<String[]> lines = new ArrayList<String[]>();
 
-public class QBConverter extends CSVReader {
-    private Properties properties;
-    private Integer[] placeholders; // позиции в исходной строке. -1 - без позиции
-    private String[] substitutions; //подстановки значений. Либо значение, либо null
-    protected String[] headers;
-    protected int bytesReaded;
-    public QBConverter(Reader reader, char c, String mappingFile) {
-        super(reader, c);
-        properties = new Properties();
-        if (mappingFile!=null){
-            try {
-                FileInputStream fis = new FileInputStream(mappingFile);
-                InputStreamReader in = new InputStreamReader(fis, "UTF-8");
-                properties.load(in);
-                fis.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        this.headers = new String[]{};
-        this.substitutions = new String[]{};
-        this.placeholders = new Integer[]{};
-        String[] nextline = new String[]{};
-        try{
-            nextline =  super.readNext();
-            // это те заголовки, что есть в файле. Сейчас будем маппить.
-
-        } catch (IOException i){
-            i.printStackTrace();
-        }
-        ArrayList<String> st  = new ArrayList<String>();
-        ArrayList<String> subs  = new ArrayList<String>();
-        ArrayList<Integer> phds  = new ArrayList<Integer>();
-        if (!properties.isEmpty())
-            for (String p: properties.stringPropertyNames()){
-                String name = (String) properties.get(p);
-                if (name !=null && !name.isEmpty()){
-                    st.add(p);
-                    String s = name.startsWith("\"") && name.endsWith("\"") ? name.substring(1, name.length()-1) : name;
-                    phds.add(-1);
-                    for (int k=0; k<nextline.length; k++){
-                        if (s.equals(nextline[k])){
-                            phds.set(phds.size()-1,k);
-                        }
-
-                    }
-
-                }
-            } else
-        {
-            this.headers = nextline;
-        }
-        this.headers = st.toArray(this.headers);
-        this.substitutions = subs.toArray(this.substitutions);
-        this.placeholders = phds.toArray(this.placeholders);
+    public QBConverter(DataBean dataBean) {
+        this.dataBean = dataBean;
     }
 
-    public String[] getHeaders(){
-        return this.headers;
-    }
-
-    public int getBytesReaded() {
-        return bytesReaded;
-    }
-
-    @Override
-    public String[] readNext() throws IOException {
-        String[] nextline =  super.readNext();
-        if (nextline!=null){
-            int c =0;
-            for (String line: nextline){
-                c += line.getBytes().length;
-            }
-            if (nextline.length==1 && nextline[0].length()==0) {
-                return nextline;
-            } else {
-                String[] newline = new String[headers.length];
-                for (int k=0; k<headers.length; k++){
-                    if (this.placeholders.length>0){
-                        if (this.placeholders[k]>-1) {
-                            newline[k]=nextline[this.placeholders[k]];
-                        } else {
-                            newline[k]= "";
-                        }
-                    } else {
-                        newline = nextline;
-                    }
-                }
-                bytesReaded = c;
-                return newline;
-            }
-        } else {
-            return null;
+    public void updateData() throws IOException {
+        Reader readerFile = new InputStreamReader(new FileInputStream(this.dataBean.getFilePath()), this.dataBean.getEncoding());
+        CSVReader reader = new CSVReader(readerFile, this.dataBean.getDelimiter().charAt(0));
+        this.header = reader.readNext();
+        String [] nextLine;
+        while ((nextLine = reader.readNext()) != null) {
+            this.lines.add(nextLine);
         }
+    }
+
+    public String[] getHeaders() {
+        return header;
+    }
+
+    public List<String[]> getLines() {
+        return lines;
     }
 }

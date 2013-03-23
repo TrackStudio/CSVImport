@@ -18,13 +18,12 @@ import com.trackstudio.soap.service.message.Message;
 import com.trackstudio.soap.service.user.User;
 
 public abstract class ImportWorker<T>  extends SwingWorker<List<T>, T> {
-
     QBConverter reader;
     TaskImporter task;
     UserImporter user;
     MessageImporter message;
     private long size; // all job
-    private long completion;
+
     private String[] getHeaders() {
         return reader.getHeaders();
     }
@@ -42,18 +41,16 @@ public abstract class ImportWorker<T>  extends SwingWorker<List<T>, T> {
 
     @Override
     protected List<T> doInBackground() throws Exception {
-        completion = 0L;
+        long completion = 0L;
         HashMap<String, String> taskMap = new HashMap<String, String>();
         List<T> results = new ArrayList<T>();
-        String[] nextline;
         int current = 0;
-        while ((nextline = reader.readNext()) != null) {
+        for (String[] nextline : this.reader.getLines()) {
             current++;
             ImportResult r = null;
             if (nextline.length==1 && nextline[0].length()==0) {
                 return results;
             }
-            completion += reader.getBytesReaded();
             String oldNumber = FieldChecker.getFieldValue(nextline, getHeaders(), FieldMap.TASK_NUMBER);
             if ((FieldChecker.getFieldValue(nextline, getHeaders(), FieldMap.TASK_NAME).length() != 0) || (oldNumber.length() != 0)) {
                 r = task.process(current, nextline, taskMap);
@@ -69,8 +66,5 @@ public abstract class ImportWorker<T>  extends SwingWorker<List<T>, T> {
             }
         }
         return results;
-
     }
-
-
 }

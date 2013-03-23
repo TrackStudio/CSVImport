@@ -1,8 +1,6 @@
 package com.trackstudio.csvimport;
 
-
-//import com.trackstudio.gui.GUI;
-//import com.trackstudio.gui.I18n;
+import au.com.bytecode.opencsv.CSVReader;
 import com.trackstudio.component.I18n;
 import com.trackstudio.data.DataBean;
 import com.trackstudio.soap.service.find.Find;
@@ -17,10 +15,7 @@ import com.trackstudio.soap.service.user.UserService;
 import com.trackstudio.soap.service.find.FindService;
 
 import javax.xml.namespace.QName;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.File;
+import java.io.*;
 import java.net.MalformedURLException;
 
 import java.net.URL;
@@ -30,15 +25,15 @@ import java.util.*;
 import java.lang.Exception;
 
 public class CSVImport {
-
-    private int readed;
     private String url;
     private String rootElement;
     private boolean updateTask = true;
     private DataBean dataBean;
+    private QBConverter converter;
 
     public CSVImport(DataBean dataBean) {
         this.dataBean = dataBean;
+        this.converter = new QBConverter(this.dataBean);
     }
 
     public String getRootElement() {
@@ -57,6 +52,10 @@ public class CSVImport {
         this.updateTask = updateTask;
     }
 
+    public QBConverter getReader() {
+        return this.converter;
+    }
+
     public abstract class Searcher<T> {
         protected String searchString;
         CSVImport csv;
@@ -71,21 +70,11 @@ public class CSVImport {
 
     }
 
-    public int getReaded() {
-        return readed;
-    }
-
     private boolean isAuthenticate = false;
 
     //   private GUI gui;
     private long size;
 
-
-    public QBConverter getReader() {
-        return reader;
-    }//private String[][] dataValues;
-
-    private QBConverter reader;
 
     private String sessionId;
 
@@ -97,25 +86,9 @@ public class CSVImport {
     private String login;
     private String fileName, encoding, delimiter, mapping;
 
-
-    private List<String[]> preview = null;
-
     public List<String[]> getPreview() {
-        try {
-            if (preview == null) {
-                initPreview();
-            }
-        } catch (IOException ioe) {
-            this.dataBean.setLog(ioe);
-        }
-        return preview;
+        return this.converter.getLines();
     }
-
-
-//    public CSVImport(GUI g) {
-//        this.gui = g;
-//
-//    }
 
     public void setMapping(String mapping) {
         this.mapping = mapping;
@@ -125,10 +98,7 @@ public class CSVImport {
         try {
             this.dataBean.setLog(I18n.getString("CHANGE_FILE_INFO"));
             this.fileName = fileName;
-            this.encoding = encoding;
-            this.delimiter = delimiter;
             refreshCSVData();
-            initPreview();
         } catch (Exception ioe) {
             this.dataBean.setLog(ioe);
         }
@@ -144,14 +114,12 @@ public class CSVImport {
 
 
     public String[] getHeaders() {
-        return this.reader.getHeaders();
+        return this.converter.getHeaders();
     }
-
 
     public boolean checkDelimiter() {
         return false;
     }
-
 
     public long getSize() {
         return size;
@@ -161,23 +129,8 @@ public class CSVImport {
         this.dataBean.setLog(I18n.getString("REFRESHING_CSV_DATA"));
         File f = new File(fileName);
         if (f.exists()) size = f.length();
-        this.reader = new QBConverter(new InputStreamReader(new FileInputStream(fileName), encoding), delimiter.charAt(0), this.mapping);
-        // this.reader.setHeaders( this.reader.readNext());
-
+        this.converter.updateData();
     }
-
-    private void initPreview() throws IOException {
-        readed = -1;
-        preview = new ArrayList<String[]>();
-        String[] nextline;
-        while (readed < 100 && (nextline = reader.readNext()) != null) {
-            if (nextline.length > 0) {
-                preview.add(nextline);
-                readed++;
-            }
-        }
-    }
-
 
     public int getDataValueColumnsLength() {
         return getHeaders().length;
