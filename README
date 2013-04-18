@@ -5,3 +5,5 @@ ant ts-client -DsoapURL=http://ec2host.trackstudio.com:8080/TrackStudio/services
 
 2) Build CSV Import Tool
 ant csvimport csvdistr-unix-jre
+
+http://www.trackstudio.ru
