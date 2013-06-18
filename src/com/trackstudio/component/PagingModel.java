@@ -46,8 +46,8 @@ public class PagingModel extends AbstractTableModel {
 
 
     public String getColumnName(int col) {
-        if (csv.getHeaders()!=null)
-            return csv.getHeaders()[col];
-        return null;
+        String name = csv.getHeaders()[col];
+        System.out.println("name="+name);
+        return name;
     }
 }
