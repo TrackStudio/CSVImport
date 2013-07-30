@@ -1,11 +1,11 @@
-Task;Text
-120;"Test operation import 1"
-120;"Test operation import 2"
-120;"Test operation import 3"
-120;"Test operation import 4"
-120;"Test operation import 5"
-123;"Test operation import 1"
-123;"Test operation import 2"
-123;"Test operation import 3"
-123;"Test operation import 4"
-123;"Test operation import 5"
+Task;Text;Note;SUBMITTER
+124;Test operation import 1;Note;Administrator
+124;Test operation import 2;Note;Administrator
+124;Test operation import 3;Note;Administrator
+124;Test operation import 4;Note;Administrator
+124;Test operation import 5;Note;Administrator
+123;Test operation import 1;Note;Administrator
+123;Test operation import 2;Note;Administrator
+123;Test operation import 3;Note;Administrator
+123;Test operation import 4;Note;Administrator
+123;Test operation import 5;Note;Administrator
