@@ -31,7 +31,7 @@ public class QBConverter {
     private void readKeyHeader() throws IOException {
         keyHeader = new LinkedHashMap<String, String>();
         Properties prop = new Properties();
-        prop.load(new FileInputStream(dataBean.getMappingFile()));
+        prop.load(new InputStreamReader(new FileInputStream(dataBean.getMappingFile()), dataBean.getEncoding()));
         for (Enumeration enums = prop.propertyNames();enums.hasMoreElements();){
             String name = enums.nextElement().toString();
             keyHeader.put(prop.getProperty(name), name);
