@@ -1,4 +1,4 @@
-Login;Name;Status;Email
-peter;Peter Johnson;Администратор;developer@localhost
-john;John Peretson;Администратор;manager@localhost
-simba;Simba Toowe;Администратор;tester@localhost
+Login;Name;Status;Email;Template
+peter;Peter Johnson;Администратор;developer@localhost;default_html.ftl
+john;John Peretson;Администратор;manager@localhost;default_html.ftl
+simba;Simba Toowe;Администратор;tester@localhost;default_html.ftl
