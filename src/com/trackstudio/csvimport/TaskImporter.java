@@ -34,19 +34,15 @@ public class TaskImporter {
 
     public ImportResult process(int current, String[] nextline, HashMap<String, String> taskMap) throws Exception {
         long taskBudget;
-        long taskDeadline;
-        long taskSubmitDate;
-        long taskUpdateDate;
-        long taskCloseDate;
-        String newTaskNumber;
+        String taskDeadline = null;
+        String taskSubmitDate = null;
+        String taskUpdateDate = null;
+        String taskCloseDate = null;
+        String newTaskNumber = null;
 
         StringBuffer error = new StringBuffer();
 
         taskBudget = 0;
-        taskDeadline = -1;
-        taskSubmitDate = -1;
-        taskUpdateDate = -1;
-        taskCloseDate = -1;
         String[] headersLocal = headers;
         if (updateTask && FieldChecker.getFieldValue(nextline, headersLocal, FieldMap.TASK_CATEGORY)==null) {
             this.dataBean.setLog("ERROR: Field '", FieldMap.TASK_CATEGORY + "' does not exists See CSV file, line number " + String.valueOf(current));
@@ -70,7 +66,7 @@ public class TaskImporter {
         if (FieldChecker.getFieldValue(nextline, headersLocal, FieldMap.TASK_DEADLINE).length() != 0) {
             try {
 
-                taskDeadline = dateformat.parseToCalendar(FieldChecker.getFieldValue(nextline, headersLocal, FieldMap.TASK_DEADLINE)).getTimeInMillis();
+                taskDeadline = FieldChecker.getFieldValue(nextline, headersLocal, FieldMap.TASK_DEADLINE);
             } catch (Exception e) {
                 this.dataBean.setLog("ERROR: ", FieldMap.TASK_DEADLINE + " can not be parsed. See CSV file, line number " + String.valueOf(current) + " . The pattern for date fields is " + dateformat.getPattern());
 
@@ -82,7 +78,7 @@ public class TaskImporter {
 
         if (FieldChecker.getFieldValue(nextline, headersLocal, FieldMap.TASK_SUBMITDATE).length() != 0) {
             try {
-                taskSubmitDate = dateformat.parseToCalendar(FieldChecker.getFieldValue(nextline, headersLocal, FieldMap.TASK_SUBMITDATE)).getTimeInMillis();
+                taskSubmitDate = FieldChecker.getFieldValue(nextline, headersLocal, FieldMap.TASK_SUBMITDATE);
             } catch (Exception e) {
                 this.dataBean.setLog("ERROR: ", FieldMap.TASK_SUBMITDATE + " can not be parsed. See CSV file, line number " + String.valueOf(current) + " . " + I18n.getString("MSG_FIELD_DATE_PATTERN") + dateformat.getPattern());
                 error.append("ERROR: ").append(I18n.getString("MSG_FIELD")).append(" \"").append(FieldMap.TASK_SUBMITDATE.getAltKey()).append("\" ").append(I18n.getString("MSG_FIELD_CANNOT_BE_PARSED")).append(" ").append(String.valueOf(current)).append(" . ").append(I18n.getString("MSG_FIELD_DATE_PATTERN")).append(dateformat.getPattern());
@@ -92,23 +88,10 @@ public class TaskImporter {
         }
 
         if (FieldChecker.getFieldValue(nextline, headersLocal, FieldMap.TASK_UPDATEDATE).length() != 0) {
-            try {
-                taskUpdateDate = dateformat.parseToCalendar(FieldChecker.getFieldValue(nextline, headersLocal, FieldMap.TASK_UPDATEDATE)).getTimeInMillis();
-            } catch (ParseException e) {
-                this.dataBean.setLog("ERROR: ", FieldMap.TASK_UPDATEDATE + " can not be parsed. See CSV file, line number " + String.valueOf(current) + " . " + I18n.getString("MSG_FIELD_DATE_PATTERN") + dateformat.getPattern());
-                error.append("ERROR: ").append(I18n.getString("MSG_FIELD")).append(" \"").append(FieldMap.TASK_UPDATEDATE).append("\" ").append(I18n.getString("MSG_FIELD_CANNOT_BE_PARSED")).append(" ").append(String.valueOf(current)).append(" . ").append(I18n.getString("MSG_FIELD_DATE_PATTERN")).append(dateformat.getPattern());
-                return new ImportResult(current,nextline, error.toString(), ImportResult.TASK, false);
-            }
+            taskUpdateDate = FieldChecker.getFieldValue(nextline, headersLocal, FieldMap.TASK_UPDATEDATE);
         }
         if (FieldChecker.getFieldValue(nextline, headersLocal, FieldMap.TASK_CLOSEDATE).length() != 0) {
-            try {
-                taskCloseDate = dateformat.parseToCalendar(FieldChecker.getFieldValue(nextline, headersLocal, FieldMap.TASK_CLOSEDATE)).getTimeInMillis();
-            } catch (ParseException e) {
-                this.dataBean.setLog("ERROR: ", FieldMap.TASK_CLOSEDATE + " can not be parsed. See CSV file, line number " + String.valueOf(current) + " . " + I18n.getString("MSG_FIELD_DATE_PATTERN") + dateformat.getPattern());
-                error.append("ERROR: ").append(I18n.getString("MSG_FIELD")).append(" \"").append(FieldMap.TASK_CLOSEDATE).append("\" ").append(I18n.getString("MSG_FIELD_CANNOT_BE_PARSED")).append(" ").append(String.valueOf(current)).append(" . ").append(I18n.getString("MSG_FIELD_DATE_PATTERN")).append(dateformat.getPattern());
-                return new ImportResult(current, nextline, error.toString(), ImportResult.TASK, false);
-
-            }
+            taskCloseDate = FieldChecker.getFieldValue(nextline, headersLocal, FieldMap.TASK_CLOSEDATE);
         }
         List<String> udfNames = FieldChecker.getUDFNames(headersLocal);
         try {
@@ -132,7 +115,7 @@ public class TaskImporter {
 
             String number = FieldChecker.getFieldValue(nextline, headersLocal, FieldMap.TASK_NUMBER);
             this.dataBean.setLog(" update task : " + updateTask + " current number : " + number);
-            newTaskNumber = task.importTask(sessionId,
+            newTaskNumber = task.importTaskWithDate(sessionId,
                     updateTask ? number: "",
                     FieldChecker.getFieldValue(nextline, headersLocal, FieldMap.TASK_NAME),
                     FieldChecker.getFieldValue(nextline, headersLocal, FieldMap.TASK_SHORTNAME),
