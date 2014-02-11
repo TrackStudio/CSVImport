@@ -33,7 +33,7 @@
     <components />
   </files>
   <launchers>
-    <launcher name="csvimport" id="19" external="false" excludeFromMenu="false" menuName="CSV Import Manager" icnsFile="" pngIcon16File="./resources/images/databasemanagement32x32.gif" pngIcon32File="./resources/images/databasemanagement32x32.gif" macServiceDependencies="" swtApp="false" fileset="">
+    <launcher name="csvimport" id="19" external="false" excludeFromMenu="false" menuName="CSV Import Manager" icnsFile="" pngIcon16File="resources/images/databasemanagement32x32.gif" pngIcon32File="resources/images/databasemanagement32x32.gif" macServiceDependencies="" swtApp="false" fileset="">
       <executable name="csvimport" type="1" iconSet="true" iconFile="" executableDir="" redirectStderr="true" stderrFile="error.log" stderrMode="overwrite" redirectStdout="false" stdoutFile="output.log" stdoutMode="overwrite" failOnStderrOutput="true" executableMode="1" changeWorkingDirectory="true" workingDirectory="." singleInstance="false" serviceStartType="2" serviceDependencies="" serviceDescription="" jreLocation="" executionLevel="asInvoker" checkConsoleParameter="false" globalSingleInstance="false">
         <versionInfo include="false" fileVersion="" fileDescription="" legalCopyright="" internalName="" productName="" />
       </executable>

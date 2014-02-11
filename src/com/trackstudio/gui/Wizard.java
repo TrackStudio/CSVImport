@@ -79,8 +79,9 @@ public class Wizard extends JFrame {
         for (String loc : availableUILocales) {
             localeUICombo.addItem(loc);
         }
+        localeUICombo.setSelectedItem(Locale.getDefault().toString());
         logsButton = new I18nButton("LOG");
-        logsButton.setIcon(getIcon("icon-info.gif"));
+        logsButton.setIcon(getIcon("log32x32.gif"));
         logsButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 console = new JDialog(wizard, I18n.getString("MSG_TITLE"), false);

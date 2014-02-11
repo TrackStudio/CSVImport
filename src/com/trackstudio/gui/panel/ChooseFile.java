@@ -28,6 +28,7 @@ public class ChooseFile extends PanelImpl {
     private JComboBox timezoneBox;
     private final static String COMMA = ",";
     private final static String SEMICOLON = ";";
+    private final static String TAB = "\t";
 
     public ChooseFile(DataBean dataBean, CSVImport cvs) {
         this.dataBean = dataBean;
@@ -133,30 +134,31 @@ public class ChooseFile extends PanelImpl {
         delimiterCombo = new JComboBox();
         Pair comma = new Pair(COMMA, "," + " (" + I18n.getString("MSG_DELIMITER_SIGN_COMMA") + ")");
         Pair semicolon = new Pair(SEMICOLON, ";" + " (" + I18n.getString("MSG_DELIMITER_SIGN_SEMICOLON") + ")");
+        Pair tab = new Pair(TAB, "\t" + " (" + I18n.getString("MSG_DELIMITER_SIGN_TAB") + ")");
         delimiterCombo.addItem(comma);
         delimiterCombo.addItem(semicolon);
         String delimiter = TSProperties.getInstance().getTrackStudioProperty(TSProperties.TRACKSTUDIO_DELIMITER_PROPERTY);
         if (this.dataBean.getDelimiter() != null) {
             delimiter = this.dataBean.getDelimiter();
         }
+
         if (delimiter != null && delimiter.length() != 0) {
             if (delimiter.equals(COMMA)) {
                 delimiterCombo.setSelectedItem(comma);
             } else if (delimiter.equals(SEMICOLON)) {
                 delimiterCombo.setSelectedItem(semicolon);
+            } else if (delimiter.equals(TAB)) {
+                delimiterCombo.setSelectedItem(tab);
             }
         }
         Locale[] locales = Locale.getAvailableLocales();
 
         JComboBox localeBox = new JComboBox();
-        localeBox.setRenderer(new DefaultListCellRenderer(){
+        localeBox.setRenderer(new DefaultListCellRenderer() {
             public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 Locale l = (Locale)value;
                 DateFormatter df = new DateFormatter(SimpleTimeZone.getDefault(), l);
-                return   super.getListCellRendererComponent(list, l.getDisplayName(currentLocale) + " ("+df.parse(Calendar.getInstance())+")", index, isSelected, cellHasFocus);
-
-
-
+                return super.getListCellRendererComponent(list, l.getDisplayName(currentLocale) + " ("+df.parse(Calendar.getInstance())+")", index, isSelected, cellHasFocus);
             }
         });
         localeBox.setEditable(false);
@@ -169,7 +171,7 @@ public class ChooseFile extends PanelImpl {
         }
 
         timezoneBox = new JComboBox();
-        TreeSet<TimeZone> sortedZones =new TreeSet<TimeZone>(new TimeZoneSorter(currentLocale));
+        TreeSet<TimeZone> sortedZones = new TreeSet<TimeZone>(new TimeZoneSorter(currentLocale));
         String[] tz =TimeZone.getAvailableIDs();
 
         for (String t: tz){
@@ -185,7 +187,7 @@ public class ChooseFile extends PanelImpl {
         timezoneBox.setRenderer(new DefaultListCellRenderer(){
             public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 TimeZone l = (TimeZone)value;
-                return   super.getListCellRendererComponent(list, l.getDisplayName(currentLocale), index, isSelected, cellHasFocus);
+                return super.getListCellRendererComponent(list, l.getDisplayName(currentLocale), index, isSelected, cellHasFocus);
 
             }
         });
@@ -196,6 +198,7 @@ public class ChooseFile extends PanelImpl {
         saveButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 saveChanges();
+                JOptionPane.showMessageDialog(ChooseFile.this, I18n.getString("CONFIG_SAVED"), I18n.getString("MSG_PRODUCT"), JOptionPane.INFORMATION_MESSAGE);
             }
         });
 
@@ -234,7 +237,7 @@ public class ChooseFile extends PanelImpl {
         else for (String enc : encodingsShortList){
             encodingCombo.addItem(enc);
         }
-        String charset = TSProperties.getInstance().getTrackStudioProperty(TSProperties.TRACKSTUDIO_ENCODING_PROPERTY);
+        String charset = this.dataBean.getEncoding();
         encodingCombo.setSelectedItem(charset);
     }
 
@@ -285,7 +288,7 @@ public class ChooseFile extends PanelImpl {
         this.dataBean.setLog(I18n.getString("SAVING_CONFIG"));
         this.dataBean.setLog("delimiter = " + this.dataBean.getDelimiter());
         TSProperties.getInstance().setTrackStudioProperty(TSProperties.TRACKSTUDIO_DELIMITER_PROPERTY, this.dataBean.getDelimiter());
-        this.dataBean.setLog("encoding = " + this.dataBean.getEncoding());      
+        this.dataBean.setLog("encoding = " + this.dataBean.getEncoding());
         TSProperties.getInstance().setTrackStudioProperty(TSProperties.TRACKSTUDIO_ENCODING_PROPERTY, this.dataBean.getEncoding());
         this.dataBean.setLog("url = " + this.dataBean.getUrl());
         TSProperties.getInstance().setTrackStudioProperty(TSProperties.TRACKSTUDIO_URL_PROPERTY, this.dataBean.getUrl());
