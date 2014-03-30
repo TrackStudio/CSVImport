@@ -37,6 +37,10 @@ public class Wizard extends JFrame {
 
     public Wizard(DataBean dataBean) throws HeadlessException {
         wizard = this;
+        ImageIcon headerIco = getIcon("databasemanagement32x32.gif");
+        if (headerIco != null) {
+            wizard.setIconImage(headerIco.getImage());
+        }
         wizard.dataBean = dataBean;
         csv = new CSVImport(wizard.dataBean);
         String currentLocaleString = TSProperties.getInstance().getTrackStudioProperty(TSProperties.TRACKSTUDIO_LOCALE_PROPERTY);

@@ -17,7 +17,8 @@ import java.util.*;
  * Used for localization based on java.util.ResourceBundle
  */
 public class I18n {
-    public static final String DEFAULT = "en";
+    public static final String DEFAULT = Locale.getDefault().getLanguage();
+    private static final List<String> availableLocale = Arrays.asList("ru", "en");
     public static final String LANGFILE = "csvimport";
     private static String currentLocale;
     /*
@@ -111,7 +112,7 @@ public class I18n {
     }
 
     public static String getString(String key, Object[] params)  {
-        return getString(currentLocale,key,params);
+        return getString(currentLocale, key,params);
 
     }
 
@@ -120,8 +121,9 @@ public class I18n {
     }
 
     public static String getLocale() {
-        if (currentLocale == null) return DEFAULT;
-        if (currentLocale.equals("")) return DEFAULT;
+        if (currentLocale != null && availableLocale.contains(currentLocale)) return currentLocale;
+        if (availableLocale.contains(DEFAULT)) currentLocale = DEFAULT;
+        else currentLocale = availableLocale.iterator().next();
         return currentLocale;
     }
 

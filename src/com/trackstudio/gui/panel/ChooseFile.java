@@ -118,16 +118,13 @@ public class ChooseFile extends PanelImpl {
         I18nLabel chooseFileLabel = new I18nLabel("CHOOSE_FILE");
         encodingCombo = new JComboBox();
         encodingCombo.setEditable(true);
+        fillEncoding(this.dataBean.isMoreEncoding());
         encodingCombo.setSelectedItem(this.dataBean.getEncoding());
-        fillEncoding(false);
         moreEncodingCheckBox = new I18nCheckBox("MSG_CHECKBOXCHARSET_LABEL", false);
         moreEncodingCheckBox.setSelected(this.dataBean.isMoreEncoding());
         moreEncodingCheckBox.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                if (moreEncodingCheckBox.isSelected())
-                    fillEncoding(true);
-                else
-                    fillEncoding(false);
+                fillEncoding(moreEncodingCheckBox.isSelected());
             }
         });
 
@@ -137,6 +134,7 @@ public class ChooseFile extends PanelImpl {
         Pair tab = new Pair(TAB, "\t" + " (" + I18n.getString("MSG_DELIMITER_SIGN_TAB") + ")");
         delimiterCombo.addItem(comma);
         delimiterCombo.addItem(semicolon);
+        delimiterCombo.addItem(tab);
         String delimiter = TSProperties.getInstance().getTrackStudioProperty(TSProperties.TRACKSTUDIO_DELIMITER_PROPERTY);
         if (this.dataBean.getDelimiter() != null) {
             delimiter = this.dataBean.getDelimiter();
