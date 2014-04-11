@@ -112,7 +112,7 @@ public class I18n {
     }
 
     public static String getString(String key, Object[] params)  {
-        return getString(currentLocale, key,params);
+        return getString(currentLocale, key, params);
 
     }
 

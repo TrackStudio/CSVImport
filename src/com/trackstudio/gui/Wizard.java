@@ -83,7 +83,7 @@ public class Wizard extends JFrame {
         for (String loc : availableUILocales) {
             localeUICombo.addItem(loc);
         }
-        localeUICombo.setSelectedItem(Locale.getDefault().toString());
+        localeUICombo.setSelectedItem(Locale.getDefault().getLanguage());
         logsButton = new I18nButton("LOG");
         logsButton.setIcon(getIcon("log32x32.gif"));
         logsButton.addActionListener(new ActionListener() {
