@@ -205,7 +205,6 @@ public class Result extends PanelImpl {
         dialogPanel.setLayout(new BorderLayout());
         dialogPanel.setPreferredSize(new Dimension(320, 30));
         dialogPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        //dialogPanel.add(importProgress, BorderLayout.CENTER);
         dialogPanel.add(new I18nLabel("MSG_CONNECTING"), BorderLayout.CENTER);
         dialogCp.add(dialogPanel);
 
@@ -222,13 +221,10 @@ public class Result extends PanelImpl {
 
                 cvs.refreshCSVData();
                 DateFormatter dateFormatter = new DateFormatter(this.dataBean.getTimezone(), this.dataBean.getLocale());
-                ImportWorker<ImportResult> w = new ImportWorker<ImportResult>(this.dataBean, cvs.getReader(), cvs.getTaskService(), cvs.getUserService(), cvs.getMessageService(), dateFormatter, cvs.getSessionId(), cvs.isUpdateTask(), cvs.getRootElement()){
+                final ImportWorker<ImportResult> w = new ImportWorker<ImportResult>(this.dataBean, cvs.getReader(), cvs.getTaskService(), cvs.getUserService(), cvs.getMessageService(), dateFormatter, cvs.getSessionId(), cvs.isUpdateTask(), cvs.getRootElement()){
                     @Override
                     protected void process(List<ImportResult> chunks) {
-                        if (chunks!=null && !chunks.isEmpty())
-                            if (getProgress()>0){
-                                importProgress.setValue(getProgress());
-                            }
+                        importProgress.setValue(procent);
                         importProgress.revalidate();
                     }
 

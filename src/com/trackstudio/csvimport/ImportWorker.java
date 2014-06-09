@@ -23,6 +23,7 @@ public abstract class ImportWorker<T>  extends SwingWorker<List<T>, T> {
     UserImporter user;
     MessageImporter message;
     private long size; // all job
+    public volatile int procent = 0;
 
     private String[] getHeaders() {
         return reader.getHeaders();
@@ -41,10 +42,10 @@ public abstract class ImportWorker<T>  extends SwingWorker<List<T>, T> {
 
     @Override
     protected List<T> doInBackground() throws Exception {
-        long completion = 0L;
         HashMap<String, String> taskMap = new HashMap<String, String>();
         List<T> results = new ArrayList<T>();
         int current = 0;
+        int total = this.reader.getLines().size();
         for (String[] nextline : this.reader.getLines()) {
             current++;
             ImportResult r = null;
@@ -60,8 +61,7 @@ public abstract class ImportWorker<T>  extends SwingWorker<List<T>, T> {
                 r = user.process(current, nextline);
             } if (r!=null) {
                 results.add((T)r);
-                int progress1 = (int) (100 * ((float) completion / (float) size));
-                setProgress(progress1);
+                this.procent = (int) (100 * ((float) current / (float) total));
                 publish((T)r);
             }
         }
