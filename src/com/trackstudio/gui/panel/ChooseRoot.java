@@ -4,6 +4,7 @@ import com.trackstudio.component.*;
 import com.trackstudio.csvimport.CSVImport;
 import com.trackstudio.csvimport.FieldChecker;
 import com.trackstudio.data.DataBean;
+import com.trackstudio.data.Pair;
 import com.trackstudio.gui.Wizard;
 import com.trackstudio.gui.panel.impl.PanelImpl;
 import com.trackstudio.soap.service.find.TaskBean;
@@ -16,7 +17,7 @@ import java.awt.event.ActionListener;
 
 public class ChooseRoot extends PanelImpl {
     private DataBean dataBean;
-    private JComboBox resultSearch = new JComboBox();
+    private JComboBox<Pair> resultSearch = new JComboBox<Pair>();
     private JTextField searchWorld = new JTextField(20);
     private CSVImport cvs;
 
@@ -66,11 +67,11 @@ public class ChooseRoot extends PanelImpl {
                     } else {
                         if (FieldChecker.checkTaskFieldNames(cvs.getHeaders()) || FieldChecker.checkMessagesFieldNames(cvs.getHeaders())) {
                             for (TaskBean taskBean : cvs.searchTasks(searchWorld.getText())) {
-                                resultSearch.addItem(taskBean.getName()+" [#"+taskBean.getNumber()+"]");
+                                resultSearch.addItem(new Pair(taskBean.getNumber(), taskBean.getName()+" [#"+taskBean.getNumber()+"]"));
                             }
                         } else if (FieldChecker.checkUserFieldNames(cvs.getHeaders())) {
                             for (UserBean userBean : cvs.searchUsers(searchWorld.getText())) {
-                                resultSearch.addItem(userBean.getName()+" ("+userBean.getLogin()+")");
+                                resultSearch.addItem(new Pair(userBean.getLogin(), userBean.getName()+" ("+userBean.getLogin()+")"));
                             }
                         }
                     }
@@ -90,23 +91,18 @@ public class ChooseRoot extends PanelImpl {
         });
     }
 
-    private String getResult(){
-        String result = resultSearch.getSelectedItem() != null ? resultSearch.getSelectedItem().toString() : "";
-        if (result.lastIndexOf("[#") != -1) {
-            return result.substring(result.lastIndexOf("[#")+"[#".length(), result.length()-1);
-        } else if (result.indexOf("(") != -1) {
-            return result.substring(result.lastIndexOf("(") + "(".length(), result.length()-1);
-        } else {
-            return null;
-        }
+    private String getResult() {
+	    Pair value = (Pair) resultSearch.getSelectedItem();
+        return value != null ? value.getKey() : null;
     }
 
     @Override
     public String validateForm() {
-        String result = resultSearch.getSelectedItem() != null ? resultSearch.getSelectedItem().toString() : "";
-        if (result.length() == 0) {
+        final String value = this.getResult();
+        if (value == null) {
             return I18n.getString("NO_SELECTED_ROOT_ELEMENT");
         }
+	    cvs.setRootElement(value);
         return Wizard.VATILDATE_FRUE;
     }
 
