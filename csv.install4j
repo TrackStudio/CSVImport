@@ -27,6 +27,7 @@
           <entry location="README" fileType="regular" />
           <entry location="resources" fileType="regular" />
           <entry location="src" fileType="regular" />
+		  <entry location="dist" fileType="regular" />
         </exclude>
       </dirEntry>
     </entries>
